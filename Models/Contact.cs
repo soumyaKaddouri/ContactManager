@@ -18,11 +18,16 @@ namespace ContactManager.Models
 
         public Folder ParentFolder { get; set; }
 
-        public Contact()
+        public Contact(string firstName, string lastName, string email, string company, ContactLink link, Folder parentFolder = null)
         {
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            Company = company;
+            Link = link;
             CreationDate = DateTime.Now;
             ModificationDate = DateTime.Now;
+            ParentFolder = parentFolder;
         }
-
     }
 }
