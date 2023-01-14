@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ContactManager.Models
 {
-    internal enum ContactLink
+    public enum ContactLink
     {
         Friend,
         Colleague,

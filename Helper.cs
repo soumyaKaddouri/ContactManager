@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ContactManager
 {
-    internal static class Helper
+    public static class Helper
     {
-        static void AddContact(Folder currentFolder)
+        public static Folder AddContact(Folder currentFolder)
         {
             Console.WriteLine("Enter the first name: ");
             var firstName = Console.ReadLine();
@@ -26,7 +26,7 @@ namespace ContactManager
             catch (FormatException)
             {
                 Console.WriteLine("Invalid email address.");
-                return;
+                return currentFolder;
             }
 
             Console.WriteLine("Enter the company name:");
@@ -46,34 +46,49 @@ namespace ContactManager
             }
             else
             {
-                throw new Exception("Invalid Link format (must be: Friend, Colleague, Relation, or Network)");
+                Console.WriteLine("Invalid Link format (must be: Friend, Colleague, Relation, or Network)");
+                return currentFolder;
             }
 
-            
-            //Creation de nouveau contact
-            var newContact = new Contact(firstName,lastName,email,company,_link);
-            
-            // Ajout de nouveau contact au dossier courant
-            currentFolder.Contacts.Add(newContact);
-            Console.WriteLine("Contact added successfully.");
+
+            if (firstName != null && lastName != null && company != null)
+            {
+                //Creation de nouveau contact
+                var newContact = new Contact(firstName, lastName, email, company, _link);
+
+                // Ajout de nouveau contact au dossier courant
+                currentFolder.Contacts.Add(newContact);
+                Console.WriteLine("Contact added successfully.");
+            }
+            else { Console.WriteLine("The first name, last name or company must not be null "); }
+
+            return currentFolder;
         }
 
-        static void CreateFolder(Folder currentFolder)
+        public static Folder CreateFolder(Folder currentFolder)
         {
             Console.WriteLine("Entrez the folder name:");
             var name = Console.ReadLine();
 
-            var newFolder = new Folder(name);
-            
+            if(name != null)
+            {
+                var newFolder = new Folder(name);
 
-            currentFolder.ChildFolders.Add(newFolder);
-            currentFolder = newFolder;
-            Console.WriteLine("Folder created successfully.");
+                currentFolder.ChildFolders.Add(newFolder);
+                currentFolder = newFolder;
+                Console.WriteLine("Folder created successfully.");
+            }
+            else
+            {
+                Console.WriteLine("The name folder is required");
+            }
+
+            return currentFolder;
 
         }
 
 
-            static void DisplayStructure(Folder folder, int depth)
+        public static void DisplayStructure(Folder folder, int depth)
         {
             Console.WriteLine(new string('-', depth) + folder.Name);
             foreach (var subFolder in folder.ChildFolders)

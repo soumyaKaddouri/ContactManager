@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ContactManager.Models
 {
-    internal class Folder
+    public class Folder
     {
         public string Name { get; set; }
         public DateTime CreationDate { get; set; }
