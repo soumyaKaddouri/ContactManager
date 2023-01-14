@@ -16,6 +16,7 @@ namespace ContactManager
             while (true)
             {
                 Console.ResetColor();
+                Console.WriteLine();
                 Console.WriteLine(@"|*-----------------Menu-------------------*|");
                 Console.WriteLine(@"|* 1. View the entire structure           *|");
                 Console.WriteLine(@"|* 2. Create a new folder                 *|");
@@ -23,7 +24,6 @@ namespace ContactManager
                 Console.WriteLine(@"|* 4. Quit                                *|");
                 Console.WriteLine(@"|*----------------------------------------*|");
 
-                Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.Write("> ");
 
@@ -46,9 +46,7 @@ namespace ContactManager
                         }
                         else
                         {
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("Please mention the folder name");
-                            Console.ResetColor();
+                            Helper.PrinWarning("Please mention the folder name");
                         }
                         break;
                     case "3":
@@ -58,17 +56,13 @@ namespace ContactManager
                         }
                         else
                         {
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("Please add all the contact information");
-                            Console.ResetColor();
+                            Helper.PrinWarning("Please add all the contact information");
                         }
                         break;
                     case "4":
                         return;
                     default:
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Unknown instruction");
-                        Console.ResetColor();
+                        Helper.PrintError("Unknown instruction");
                         break;
                         
                 }
