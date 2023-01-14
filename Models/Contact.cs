@@ -27,5 +27,10 @@ namespace ContactManager.Models
             CreationDate = DateTime.Now;
             ModificationDate = DateTime.Now;
         }
+
+        public override string ToString()
+        {
+            return "| [C] " + LastName + ", " + FirstName + " (" + Company + "), Email:" + Email + ", Link:" + Link;
+        }
     }
 }

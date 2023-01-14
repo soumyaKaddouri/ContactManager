@@ -22,5 +22,10 @@ namespace ContactManager.Models
             ChildFolders = new List<Folder>();
             Contacts = new List<Contact>();
         }
+
+        public override string ToString()
+        {
+            return "[F] " + Name + " ( creation " + CreationDate + " ) ";
+        }
     }
 }
