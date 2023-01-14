@@ -16,9 +16,8 @@ namespace ContactManager.Models
         public DateTime CreationDate { get; set; }
         public DateTime ModificationDate { get; set; }
 
-        public Folder ParentFolder { get; set; }
 
-        public Contact(string firstName, string lastName, string email, string company, ContactLink link, Folder parentFolder = null)
+        public Contact(string firstName, string lastName, string email, string company, ContactLink link)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -27,7 +26,6 @@ namespace ContactManager.Models
             Link = link;
             CreationDate = DateTime.Now;
             ModificationDate = DateTime.Now;
-            ParentFolder = parentFolder;
         }
     }
 }
