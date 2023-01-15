@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ContactManager.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,8 @@ namespace ContactManager.Serialisation
 {
     internal interface ISerializer
     {
-        void Serialize(string fileName, object obj);
-        T Deserialize<T>(string fileName);
+        void Serialize(Folder data, string fileName);
+        Folder Deserialize(string fileName, Folder root, out bool exceptionHandled);
 
     }
 }

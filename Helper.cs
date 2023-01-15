@@ -81,6 +81,17 @@ namespace ContactManager
             }
         }
 
+        public static Folder FindLastFolder(Folder folder)
+        {
+            Folder lastFolder = folder;
+            if (folder.ChildFolders.Count > 0)
+            {
+                lastFolder = folder.ChildFolders.OrderByDescending(f => f.CreationDate).First();
+                lastFolder = FindLastFolder(lastFolder);
+            }
+            return lastFolder;
+        }
+
         public static void PrintError(string message)
         {
             Console.ForegroundColor = ConsoleColor.Red;

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ContactManager.Models
 {
+    [Serializable]
     public class Contact
     {
         public string FirstName { get; set; }
@@ -16,6 +17,7 @@ namespace ContactManager.Models
         public DateTime CreationDate { get; set; }
         public DateTime ModificationDate { get; set; }
 
+        public Contact() { }
 
         public Contact(string firstName, string lastName, string email, string company, ContactLink link)
         {

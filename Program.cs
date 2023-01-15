@@ -1,4 +1,5 @@
 ﻿using ContactManager.Models;
+using ContactManager.Serialisation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,9 @@ namespace ContactManager
                 Console.WriteLine(@"|* 1. View the entire structure           *|");
                 Console.WriteLine(@"|* 2. Create a new folder                 *|");
                 Console.WriteLine(@"|* 3. Add a contact                       *|");
-                Console.WriteLine(@"|* 4. Quit                                *|");
+                Console.WriteLine(@"|* 4. Load                                *|");
+                Console.WriteLine(@"|* 5. Save                                *|");
+                Console.WriteLine(@"|* 6. Quit                                *|");
                 Console.WriteLine(@"|*----------------------------------------*|");
 
                 Console.ForegroundColor = ConsoleColor.Blue;
@@ -46,7 +49,7 @@ namespace ContactManager
                         }
                         else
                         {
-                            Helper.PrinWarning("Please mention the folder name");
+                            Helper.PrinWarning("Please mention the folder name.");
                         }
                         break;
                     case "3":
@@ -56,10 +59,106 @@ namespace ContactManager
                         }
                         else
                         {
-                            Helper.PrinWarning("Please add all the contact information");
+                            Helper.PrinWarning("Please add all the contact information.");
                         }
                         break;
                     case "4":
+                        var factory = new SerializerFactory();
+                        ISerializer serializer;
+                        string fileName;
+                        Console.WriteLine("What type of load you want: ");
+                        Console.WriteLine(" 1.Xml ");
+                        Console.WriteLine(" 2.Binary");
+
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write("> ");
+                        int? loadingType = int.Parse(Console.ReadLine());
+                        Console.ResetColor();
+
+                        if (loadingType == 1)
+                        {
+                            serializer = factory.CreateSerializer("xml");
+                            fileName = "ContactManager1.db";
+
+                        }
+                        else if (loadingType == 2)
+                        {
+                            serializer = factory.CreateSerializer("binary");
+                            fileName = "ContactManager2.db";
+                        }
+                        else
+                        {
+                            Helper.PrintError("Unknown instruction");
+                            break;
+                        }
+
+                        string password = "mypassword";
+                        int tryCount = 0;
+                        string enteredPassword;
+                        while (tryCount < 3)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.Write("> Please enter the password: ");
+                            enteredPassword = Console.ReadLine();
+                            Console.ResetColor();
+
+                            if (enteredPassword == password)
+                            {
+                                bool exceptionHandled;
+                                root = serializer.Deserialize(fileName,root, out exceptionHandled);
+                                
+                                currentFolder = Helper.FindLastFolder(root);
+                                if (!exceptionHandled)
+                                {
+                                    Helper.PrintSuccess("The object is loaded.");
+                                }
+                                break;
+                            }
+                            else
+                            {
+                                tryCount++;
+                                Helper.PrintError("Wrong password, please try again.");
+                            }
+                        }
+                        if (tryCount == 3)
+                        {
+                            var currentUserMyDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                            var fileLocation = Path.Combine(currentUserMyDocuments, fileName);
+                            Console.WriteLine(fileLocation);
+                            File.Delete(fileLocation);
+                            Helper.PrinWarning("You reached the maximum number of tries, the file has been deleted.");
+                        }
+                        
+                        break;
+                    case "5":
+                        var fact = new SerializerFactory();
+                        ISerializer serializer1;
+                        Console.WriteLine("What type of load you want: ");
+                        Console.WriteLine(" 1.Xml ");
+                        Console.WriteLine(" 2.Binary");
+
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write("> ");
+                        int? type = int.Parse(Console.ReadLine());
+                        Console.ResetColor();
+
+                        if (type == 1)
+                        {
+                            serializer1 = fact.CreateSerializer("xml");
+                            serializer1.Serialize(root, "ContactManager1.db");
+                        }
+                        else if (type == 2)
+                        {
+                            serializer1 = fact.CreateSerializer("binary");
+                            serializer1.Serialize(root, "ContactManager2.db");
+                        }
+                        else
+                        {
+                            Helper.PrintError("Unknown instruction");
+                            break;
+                        }
+                        break;
+                    case "6":
                         return;
                     default:
                         Helper.PrintError("Unknown instruction");

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ContactManager.Models
 {
+    [Serializable]
     public class Folder
     {
         public string Name { get; set; }
@@ -13,6 +14,11 @@ namespace ContactManager.Models
         public DateTime ModificationDate { get; set; }
         public List<Folder> ChildFolders { get; set; }
         public List<Contact> Contacts { get; set; }
+
+        // It's important to have a parameterless constructor during when we declare a class as Serializable
+        public Folder()
+        {
+        }
 
         public Folder(string name)
         {
