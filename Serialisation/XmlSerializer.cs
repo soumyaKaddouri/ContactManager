@@ -1,4 +1,4 @@
-﻿using ContactManager.Models;
+﻿using ContactManager.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +29,7 @@ namespace ContactManager.Serialisation
                 string key = Console.ReadLine();
                 Console.ResetColor();
 
+                // If no key is specified, We use the internal identifier (SID) of the current Windows identity
                 if (string.IsNullOrEmpty(key))
                 {
                     var identity = WindowsIdentity.GetCurrent();
@@ -37,6 +38,7 @@ namespace ContactManager.Serialisation
 
                 using (FileStream input = new FileStream(fileLocation, FileMode.Create))
                 {
+                    // Encryption
                     byte[] keyBytes = Encoding.UTF8.GetBytes(key);
                     byte[] iv = new byte[16];
                     Array.Copy(keyBytes, iv, Math.Min(keyBytes.Length, iv.Length));
@@ -80,12 +82,13 @@ namespace ContactManager.Serialisation
             
             try
             {
-                // Prompt user for encryption key
+                // Prompt user for encryption key : We must give the same key used during the encryption
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.Write("> Please enter the encryption key: ");
                 string key = Console.ReadLine();
                 Console.ResetColor();
 
+                // If no key is specified, We use the internal identifier (SID) of the current Windows identity
                 if (string.IsNullOrEmpty(key))
                 {
                     var identity = WindowsIdentity.GetCurrent();
@@ -94,6 +97,7 @@ namespace ContactManager.Serialisation
 
                 using (FileStream input = new FileStream(fileLocation, FileMode.Open))
                 {
+                    // Decryption
                     byte[] keyBytes = Encoding.UTF8.GetBytes(key);
                     byte[] iv = new byte[16];
                     Array.Copy(keyBytes, iv, Math.Min(keyBytes.Length, iv.Length));

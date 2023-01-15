@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContactManager.Models
+namespace ContactManager.Data
 {
     [Serializable]
     public class Contact
@@ -17,6 +17,7 @@ namespace ContactManager.Models
         public DateTime CreationDate { get; set; }
         public DateTime ModificationDate { get; set; }
 
+        // It's important to have a parameterless constructor during when we declare a class as Serializable
         public Contact() { }
 
         public Contact(string firstName, string lastName, string email, string company, ContactLink link)

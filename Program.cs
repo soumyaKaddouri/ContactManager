@@ -1,4 +1,4 @@
-﻿using ContactManager.Models;
+﻿using ContactManager.Data;
 using ContactManager.Serialisation;
 using System;
 using System.Collections.Generic;
@@ -66,7 +66,7 @@ namespace ContactManager
                         var factory = new SerializerFactory();
                         ISerializer serializer;
                         string fileName;
-                        Console.WriteLine("What type of load you want: ");
+                        Console.WriteLine("What type of load you want (Type 1 or 2): ");
                         Console.WriteLine(" 1.Xml ");
                         Console.WriteLine(" 2.Binary");
 
@@ -91,7 +91,8 @@ namespace ContactManager
                             Helper.PrintError("Unknown instruction");
                             break;
                         }
-
+                        // When loading, the user must type the password (mypassword)
+                        // If the password entered is incorrect on the 3rd attempt, the database is deleted. 
                         string password = "mypassword";
                         int tryCount = 0;
                         string enteredPassword;
@@ -104,6 +105,7 @@ namespace ContactManager
 
                             if (enteredPassword == password)
                             {
+                                // I add the exceptionHandled boolean to know if at the moment of loading, an exception is throwed or not
                                 bool exceptionHandled;
                                 root = serializer.Deserialize(fileName,root, out exceptionHandled);
                                 
@@ -122,6 +124,7 @@ namespace ContactManager
                         }
                         if (tryCount == 3)
                         {
+                            // deleting the file
                             var currentUserMyDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                             var fileLocation = Path.Combine(currentUserMyDocuments, fileName);
                             Console.WriteLine(fileLocation);
@@ -133,7 +136,7 @@ namespace ContactManager
                     case "5":
                         var fact = new SerializerFactory();
                         ISerializer serializer1;
-                        Console.WriteLine("What type of load you want: ");
+                        Console.WriteLine("What type of load you want (Type 1 or 2): ");
                         Console.WriteLine(" 1.Xml ");
                         Console.WriteLine(" 2.Binary");
 

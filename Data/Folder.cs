@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContactManager.Models
+namespace ContactManager.Data
 {
     [Serializable]
     public class Folder

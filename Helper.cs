@@ -1,8 +1,9 @@
-﻿using ContactManager.Models;
+﻿using ContactManager.Data;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,12 +11,12 @@ namespace ContactManager
 {
     public static class Helper
     {
-        // Utiliser pour convertir la 1ere lettre d'une chaine de caractere au Majuscule
+        // Used to convert the 1st letter of a string to Uppercase
         static TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
 
         public static Folder AddContact(Folder currentFolder, string[] fields)
         {
-            // Vérification de la validité de l'adresse email
+            // Checking the validity of the email address
             try
             {
                 var addr = new System.Net.Mail.MailAddress(fields[3]);
@@ -33,14 +34,14 @@ namespace ContactManager
             // Link Verification
             if (links.Contains(fields[5]))
             {
-                // Convertion de string vers le type enum ContactLink
+                // Converting string to enum type ContactLink
                 _link = (ContactLink)Enum.Parse(typeof(ContactLink), textInfo.ToTitleCase(fields[5]));
 
-                // Creation de nouveau contact
+                // Creating a new contact
                 var newContact = new Contact(textInfo.ToTitleCase(fields[1]), textInfo.ToTitleCase(fields[2]), fields[3],
                    textInfo.ToTitleCase(fields[4]), _link);
 
-                // Ajout de nouveau contact au dossier courant
+                // Adding a new contact to current Folder
                 currentFolder.Contacts.Add(newContact);
 
                 PrintSuccess("Contact added successfully.");
@@ -58,6 +59,7 @@ namespace ContactManager
             var newFolder = new Folder(textInfo.ToTitleCase(nameFolder));
 
             currentFolder.ChildFolders.Add(newFolder);
+            // Current folder point on the last folder created
             currentFolder = newFolder;
 
             PrintSuccess("Folder created successfully.");
@@ -70,6 +72,7 @@ namespace ContactManager
 
         public static void DisplayStructure(Folder folder, int depth)
         {
+            // I used a recursive approach to display the entire structure
             Console.WriteLine(new string('-', depth) + folder.ToString());
             foreach (var subFolder in folder.ChildFolders)
             {
@@ -81,6 +84,7 @@ namespace ContactManager
             }
         }
 
+        // This method is used when I want to load the file and retrieve the last created folder 
         public static Folder FindLastFolder(Folder folder)
         {
             Folder lastFolder = folder;
@@ -91,19 +95,22 @@ namespace ContactManager
             }
             return lastFolder;
         }
-
+        
+        // For printing an Error message
         public static void PrintError(string message)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Error: " + message);
         }
 
+        // For printing a Warning message 
         public static void PrinWarning(string message)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Warning: " + message);
         }
 
+        // For printing a Success message
         public static void PrintSuccess(string message)
         {
             Console.ForegroundColor = ConsoleColor.Green;
